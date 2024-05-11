@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat</title>
+</head>
+
+<body>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <h1>redis Chat</h1>
+    <div id="messages">
+    </div>
+    <input type="text" name="message" id="message">
+    <br>
+    <button id="sndBtn">submit</button>
+    <%=username%>
+
+        <script>
+            const socket = io("http://localhost:3001")
+            document.getElementById("sndBtn").addEventListener("click", () => {
+                const message = document.getElementById("message").value
+                socket.emit("message",{message , username: "<%=username%>"})
+            })
+            socket.on("SentMessage", (data) => {
+                const headingElement = document.createElement("h5")
+                headingElement.innerText = `${data.username} : ${data.message}`
+                const divmessage= document.getElementById("messages")
+                divmessage.appendChild(headingElement)
+            })
+        </script>
+</body>
+
+</html>
